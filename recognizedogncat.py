@@ -7,45 +7,46 @@ import numpy as np
 
 #---preprocessing---
 train_datagen = image.ImageDataGenerator(
-    rescale= 1./255,
-    shear_range= 0.2,
-    zoom_range= 0.2,
-    horizontal_flip= True
+    rescale=1./255,
+    shear_range=0.2,
+    zoom_range=0.2,
+    horizontal_flip=True
 )
 training_set = train_datagen.flow_from_directory(
     "C:/Users/a0970/git-repos/Neural Networks/dataset/training_set",
-    target_size= (64,64),
-    batch_size= 32,
-    class_mode= "binary"
+    target_size=(64,64),
+    batch_size=32,
+    class_mode="binary"
 )
-test_datagen = image.ImageDataGenerator(rescale= 1./255)
+test_datagen = image.ImageDataGenerator(rescale=1./255)
 testing_set = test_datagen.flow_from_directory(
     "C:/Users/a0970/git-repos/Neural Networks/dataset/test_set",
-    target_size= (64,64),
-    batch_size= 32,
-    class_mode= "binary"
+    target_size=(64,64),
+    batch_size=32,
+    class_mode="binary"
 )
 
 #---build CNN---
 cnn = Sequential()
 cnn.add(Conv2D(
-    filters= 32,
-    kernel_size= 3,
-    input_shape= [64,64,3],
-    activation= "relu"
+    filters=32,
+    kernel_size=3,
+    input_shape=[64,64,3],
+    activation="relu"
 ))
 cnn.add(MaxPooling2D(pool_size= 2,strides= 2))
 cnn.add(Conv2D(
-    filters= 32,
-    kernel_size= 3,
-    activation= "relu"
+    filters=32,
+    kernel_size=3,
+    activation="relu"
 ))
 cnn.add(MaxPooling2D(pool_size= 2,strides= 2))
+cnn.add(Dropout(0.25))
 cnn.add(Flatten())
 #full connection layer
 cnn.add(Dense(units= 128,activation= "relu"))
+cnn.add(Dropout(0.5))
 #output layer
-cnn.add(Dense(units= 128,activation= "relu"))
 cnn.add(Dense(units= 1,activation= "sigmoid"))
 
 #---train CNN---
@@ -59,7 +60,7 @@ test_img = np.expand_dims(test_img, axis= 0)
 result = cnn.predict(test_img)
 # print(training_set.class_indices)
 if result[0][0] == 1:
-    prediction = "cat"
-else:
     prediction = "dog"
+else:
+    prediction = "cat"
 print(prediction)
