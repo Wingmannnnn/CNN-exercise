@@ -25,7 +25,7 @@ LeftEye_L_P = [263]     #左邊眼睛最左邊位置
 
 # ---變數---
 c = 1
-TIME_RATE = 5
+TIME_RATE = 60
 blink_times = 0
 CEF_COUNTER1 = 0
 CEF_COUNTER2 = 0
@@ -51,7 +51,7 @@ def speak(sentence):
         mixer.music.play()
 
 def blink_speak(blink_times):
-    if blink_times > 10:
+    if blink_times > 18:
         speak("眨眼頻率過高，請打起精神")
         blink_times = 0
     return blink_times
